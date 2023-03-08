@@ -57,10 +57,58 @@ let canvasPosition = canvas.getBoundingClientRect();
      // Sprite
      ctx.fillStyle = 'red';
      ctx.beginPath();
+     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+     ctx.fill();
+     ctx.closePath();
+  }
+ }
+
+ const player = new Player()
+// Bubbles
+ const bubblesArray = [];
+ class Bubble { 
+  constructor() { 
+    this.x = Math.random() * canvas.width; 
+    this.y = canvas.height + Math.random() * canvas.height;
+    this.radius = 50;
+    this.speed = Math.random() * 5 + 1;
+    this.distance;
+
+  }
+    update() {
+       this.y -= this.speed;
+    }
+    draw() { 
+      ctx.fillStyle = 'blue';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.closePath();
+      ctx.stroke();
+    }
+ }
+  function handlesBubbles () {
+     if (gameFrame % 50 == 0) { 
+       bubblesArray.push(new Bubble());
+       console.log(bubblesArray.length);
+     }
+     for (let i= 0; i < bubblesArray.length; i++) {
+          bubblesArray[i].update();
+          bubblesArray[i].draw();
+          if (bubblesArray[i] < 0) { 
+             bubblesArray.splice(i, 1);
+          }
+     }
   }
 
-
- }
-// Bubbles
-
 // Animation Loop
+ function animate() { 
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+   handlesBubbles ();
+   player.update();
+   player.draw();
+   gameFrame++;
+   console.log(gameFrame);
+   requestAnimationFrame(animate);
+ }
+ animate();
