@@ -69,7 +69,7 @@ let canvasPosition = canvas.getBoundingClientRect();
  class Bubble { 
   constructor() { 
     this.x = Math.random() * canvas.width; 
-    this.y = canvas.height + Math.random() * canvas.height;
+    this.y = canvas.height + 100;
     this.radius = 50;
     this.speed = Math.random() * 5 + 1;
     this.distance;
@@ -92,11 +92,15 @@ let canvasPosition = canvas.getBoundingClientRect();
        bubblesArray.push(new Bubble());
        console.log(bubblesArray.length);
      }
-     for (let i= 0; i < bubblesArray.length; i++) {
+     for (let i= 0; i < bubblesArray.length; i++) { // Не е добра практика
           bubblesArray[i].update();
           bubblesArray[i].draw();
-          if (bubblesArray[i] < 0) { 
-             bubblesArray.splice(i, 1);
+          
+          for (let i = 0; i < bubblesArray.length; i++) { // Правим нов for loop за да върти анимацията в нов масив на балони тъй като нз за друг fix.
+            if (bubblesArray[i].y < 0 - bubblesArray[i].radius * 2 ) { 
+              bubblesArray.splice(i, 1);
+           }            
+
           }
      }
   }
@@ -107,6 +111,7 @@ let canvasPosition = canvas.getBoundingClientRect();
    handlesBubbles ();
    player.update();
    player.draw();
+   ctx.fillText('score: ' + score);
    gameFrame++;
    console.log(gameFrame);
    requestAnimationFrame(animate);
